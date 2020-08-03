@@ -1,0 +1,48 @@
+package com.company;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class CirclePanel extends JPanel {
+
+    Eat eat = new Eat();
+    Circle circle = new Circle(250, 250, 50, eat);
+    Circle circle2 = new Circle(350, 350, 50, eat);
+
+    ArrayList<Eat> eats = new ArrayList<Eat>();
+
+    private Timer repaintTimer = new Timer(7, new ActionListener() {
+        public void actionPerformed(ActionEvent ev) {
+            repaint();
+        }
+    });
+
+    public CirclePanel(){
+        setBackground(Color.WHITE);
+        repaintTimer.start();
+        initEat();
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D canvas = (Graphics2D) g;
+        eat.paint(canvas);
+        circle.paint(canvas);
+        circle2.paint(canvas);
+    }
+
+    private void initEat(){
+        for(int i = 0; i < 10; i++){
+            Eat eat = new Eat();
+            eats.add(eat);
+        }
+    }
+
+    private void initCircle(){
+
+    }
+
+}
