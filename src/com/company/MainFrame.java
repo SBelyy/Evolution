@@ -15,16 +15,9 @@ public class MainFrame extends JFrame {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(WIDTH, HEIGHT);
         frame.setLocationRelativeTo(null);
-        JButton button = new JButton("Start");
-        frame.add(button);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                CirclePanel panel = new CirclePanel();
-                frame.add(panel);
-                frame.setVisible(true);
-            }
-        });
+        CirclePanel panel = new CirclePanel();
+        frame.add(panel);
+        frame.setExtendedState(MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
 

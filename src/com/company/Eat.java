@@ -3,15 +3,15 @@ package com.company;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-public class Eat {
+public class Eat{
 
-    private int xPosition;
-    private int yPosition;
+    private double xPosition;
+    private double yPosition;
     private int radius;
     private Dimension sSize;
 
     public Eat(){
-        sSize = Toolkit.getDefaultToolkit ().getScreenSize ();
+        sSize = Toolkit.getDefaultToolkit().getScreenSize();
         int height = sSize.height;
         int width = sSize.width;
         radius = (int)(Math.random() * 25) + 10;
@@ -34,21 +34,21 @@ public class Eat {
 //
 //    }
 
-    public void relocation(){
+    public synchronized void relocation(){
         xPosition = (int)(Math.random() * 960) + 10;
         yPosition = (int)(Math.random() * 760) + 10;
         radius = (int)(Math.random() * 25) + 10;
     }
 
-    public int getxPosition() {
+    public synchronized double getxPosition() {
         return xPosition;
     }
 
-    public int getyPosition() {
+    public synchronized double getyPosition() {
         return yPosition;
     }
 
-    public int getRadius() {
+    public synchronized int getRadius() {
         return radius;
     }
 }

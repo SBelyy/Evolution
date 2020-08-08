@@ -8,10 +8,8 @@ import java.util.ArrayList;
 
 public class CirclePanel extends JPanel {
 
-    Eat eat = new Eat();
-    Circle circle = new Circle(250, 250, 50, eat);
-    Circle circle2 = new Circle(350, 350, 50, eat);
-
+    Circle circle;
+    Circle circle2;
     ArrayList<Eat> eats = new ArrayList<Eat>();
 
     private Timer repaintTimer = new Timer(7, new ActionListener() {
@@ -22,14 +20,18 @@ public class CirclePanel extends JPanel {
 
     public CirclePanel(){
         setBackground(Color.WHITE);
-        repaintTimer.start();
         initEat();
+        circle = new Circle(250, 250, 50, eats);
+        circle2 = new Circle(350, 350, 50, eats);
+        repaintTimer.start();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D canvas = (Graphics2D) g;
-        eat.paint(canvas);
+        for(Eat eat : eats){
+            eat.paint(canvas);
+        }
         circle.paint(canvas);
         circle2.paint(canvas);
     }
@@ -37,7 +39,7 @@ public class CirclePanel extends JPanel {
     private void initEat(){
         for(int i = 0; i < 10; i++){
             Eat eat = new Eat();
-            eats.add(eat);
+            eats.add(i, eat);
         }
     }
 

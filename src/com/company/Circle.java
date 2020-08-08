@@ -10,22 +10,21 @@ public class Circle implements Runnable{
     private double y;
     private int radius;
 
-    private double XEatPosition;
-    private double YEatPosition;
+    private double xEatPosition;
+    private double yEatPosition;
+    private int eatIndex;
 
     private ArrayList<Eat> eats;
 
     private double speed = 5;
     private double speedX;
     private double speedY;
-    Eat eat;
 
     public Circle(double x, double y, int radius, ArrayList<Eat> eats){
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.eats = new ArrayList<Eat>(eats);
-        this.eat = eat;
         speedX = speed;
         speedY = speed;
         Thread thisThread = new Thread(this);
@@ -42,58 +41,91 @@ public class Circle implements Runnable{
 
     @Override
     public void run() {
-        move();
+        while (true){
+            finding();
+            speedDetermination();
+            move();
+            relocation();
+        }
     }
 
     private void move(){
-        while (true) {
-            double xLong = Math.abs(x - eat.getxPosition());
-            double yLong = Math.abs(y - eat.getyPosition());
-
-            speedX = speed;
-            speedY = speed;
-            if(xLong > yLong){
-                float time = (float)(xLong/speedX);
-                speedY = yLong / time;
-            }else {
-                float time = (float)(yLong/speedY);
-                speedX = xLong / time;
-            }
-
-            if (x <= eat.getxPosition() + eat.getRadius() && x >= eat.getxPosition() - eat.getRadius() &&
-                    y <= eat.getyPosition() + eat.getRadius() && y >= eat.getyPosition() - eat.getRadius()){
-                speedY = speed;
-                speedX = speed;
-                eat.relocation();
-            }
-
             try {
-                if (x <= eat.getxPosition() && y >= eat.getyPosition()) {
+                if (x <= xEatPosition && y >= yEatPosition) {
                     x += speedX;
                     y -= speedY;
-                } else if (x >= eat.getxPosition() && y >= eat.getyPosition()) {
+                } else if (x >= xEatPosition && y >= yEatPosition) {
                     x -= speedX;
                     y -= speedY;
-                } else if (x >= eat.getxPosition() && y <= eat.getyPosition()) {
+                } else if (x >= xEatPosition && y <= yEatPosition) {
                     x -= speedX;
                     y += speedY;
-                } else if (x <= eat.getxPosition() && y <= eat.getyPosition()) {
+                } else if (x <= xEatPosition && y <= yEatPosition) {
                     x += speedX;
                     y += speedY;
-                } else if (x <= eat.getxPosition()) {
+                } else if (x <= xEatPosition) {
                     x += speedX;
-                } else if (x >= eat.getxPosition()) {
+                } else if (x >= xEatPosition) {
                     x -= speedX;
-                } else if (y <= eat.getyPosition()) {
+                } else if (y <= yEatPosition) {
                     y += speedY;
-                } else if (y >= eat.getyPosition()) {
+                } else if (y >= yEatPosition) {
                     y -= speedY;
                 }
                 Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+    }
+
+    private synchronized void relocation(){
+        double eatRadius = eats.get(eatIndex).getRadius();
+
+        if (x <= xEatPosition + eatRadius && x >= xEatPosition - eatRadius &&
+                y <= yEatPosition + eatRadius && y >= yEatPosition - eatRadius){
+            speedY = speed;
+            speedX = speed;
+            eats.get(eatIndex).relocation();
         }
+
+    }
+
+    private void finding(){
+        xEatPosition = eats.get(0).getxPosition();
+        yEatPosition = eats.get(0).getyPosition();
+
+        eatIndex = 0;
+
+        double hypotenuse = calculate(xEatPosition, yEatPosition);
+
+        for(int i = 0; i < eats.size(); i++){
+            if(hypotenuse > calculate(eats.get(i).getxPosition(), eats.get(i).getyPosition())){
+                hypotenuse = calculate(eats.get(i).getxPosition(), eats.get(i).getyPosition());
+                xEatPosition = eats.get(i).getxPosition();
+                yEatPosition = eats.get(i).getyPosition();
+                eatIndex = i;
+            }
+        }
+    }
+
+    private void speedDetermination(){
+        double xLong = Math.abs(x - xEatPosition);
+        double yLong = Math.abs(y - yEatPosition);
+
+        speedX = speed;
+        speedY = speed;
+        if(xLong > yLong){
+            float time = (float)(xLong/speedX);
+            speedY = yLong / time;
+        }else {
+            float time = (float)(yLong/speedY);
+            speedX = xLong / time;
+        }
+
+    }
+
+    private double calculate(double a, double b){
+        return Math.sqrt((x - a)*(x - a) + (y - b)*(y - b));
     }
 
 }
