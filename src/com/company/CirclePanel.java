@@ -37,7 +37,7 @@ public class CirclePanel extends JPanel {
     }
 
     private void initEat(){
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 5; i++){
             Eat eat = new Eat();
             eats.add(i, eat);
         }

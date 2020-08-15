@@ -78,7 +78,7 @@ public class Circle implements Runnable{
             }
     }
 
-    private synchronized void relocation(){
+    private void relocation(){
         double eatRadius = eats.get(eatIndex).getRadius();
 
         if (x <= xEatPosition + eatRadius && x >= xEatPosition - eatRadius &&

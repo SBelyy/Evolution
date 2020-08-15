@@ -15,8 +15,8 @@ public class Eat{
         int height = sSize.height;
         int width = sSize.width;
         radius = (int)(Math.random() * 25) + 10;
-        xPosition = (int)(Math.random() * width) - radius;
-        yPosition = (int)(Math.random() * height) - radius;
+        xPosition = (int)(Math.random() * width);
+        yPosition = (int)(Math.random() * height);
 //        Thread thread = new Thread(this);
 //        thread.start();
     }
